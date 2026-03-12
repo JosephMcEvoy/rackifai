@@ -70,6 +70,13 @@ jobs:
           name: dist
           path: dist/
 
+      - name: Substitute deployment secrets
+        run: |
+          sed -i 's/DATABASE_ID_PLACEHOLDER/${{ secrets.D1_DATABASE_ID }}/' wrangler.jsonc
+          sed -i 's/KV_NAMESPACE_ID_PLACEHOLDER/${{ secrets.KV_NAMESPACE_ID }}/' wrangler.jsonc
+          sed -i 's/DATABASE_ID_PLACEHOLDER/${{ secrets.D1_DATABASE_ID }}/' dist/rackifai/wrangler.json
+          sed -i 's/KV_NAMESPACE_ID_PLACEHOLDER/${{ secrets.KV_NAMESPACE_ID }}/' dist/rackifai/wrangler.json
+
       - name: Apply D1 migrations
         uses: cloudflare/wrangler-action@da0e0dfe58b7a431659754fdf3f186c529afbe65 # v3
         with:
@@ -77,11 +84,6 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           wranglerVersion: '4'
           command: d1 migrations apply rackifai-db --remote
-
-      - name: Substitute deployment secrets
-        run: |
-          sed -i 's/DATABASE_ID_PLACEHOLDER/${{ secrets.D1_DATABASE_ID }}/' dist/rackifai/wrangler.json
-          sed -i 's/KV_NAMESPACE_ID_PLACEHOLDER/${{ secrets.KV_NAMESPACE_ID }}/' dist/rackifai/wrangler.json
 
       - name: Deploy to Cloudflare
         id: deploy
