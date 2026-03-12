@@ -1,0 +1,15 @@
+services:
+  rackifai:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - rackifai-data:/data
+    environment:
+      JWT_SECRET: change-me-to-a-random-secret
+      # Set AUTH_REQUIRED=true for multi-user mode (requires login)
+      # AUTH_REQUIRED: "true"
+      # ADMIN_USER_IDS: "user-uuid-1,user-uuid-2"
+
+volumes:
+  rackifai-data:

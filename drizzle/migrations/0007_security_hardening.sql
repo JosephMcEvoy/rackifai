@@ -1,0 +1,1 @@
+CREATE INDEX IF NOT EXISTS `projects_share_token_idx` ON `projects` (`share_token`);
