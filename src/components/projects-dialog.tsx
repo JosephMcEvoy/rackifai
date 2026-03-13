@@ -133,15 +133,8 @@ export function ProjectsDialog({
       const adapter = project.storageMode === "local" ? localAdapter : cloudAdapter
       await adapter.delete(project.id)
       setProjects((prev) => prev.filter((p) => p.id !== project.id))
-
-      // If deleting the currently active project, open next available or close
-      if (project.id === currentProjectId) {
-        const remaining = projects.filter((p) => p.id !== project.id)
-        if (remaining.length > 0) {
-          onOpen(remaining[0].id, remaining[0].storageMode)
-        }
-        // If no projects remain, app-shell will auto-create a new one
-      }
+      // Add to trash list immediately so the Trash tab updates without re-opening
+      setTrashedProjects((prev) => [{ ...project, updatedAt: new Date().toISOString() }, ...prev])
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to delete project")
     } finally {
@@ -361,19 +354,20 @@ export function ProjectsDialog({
                             : <CloudDownload className="h-3.5 w-3.5" />}
                         </Button>
                       )}
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-7 w-7 text-muted-foreground hover:text-destructive"
-                        disabled={isBusy}
-                        title="Delete project"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          handleDelete(p)
-                        }}
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </Button>
+                      <span title={isCurrent ? "Cannot delete the active project" : "Delete project"}>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-7 w-7 text-muted-foreground hover:text-destructive"
+                          disabled={isBusy || isCurrent}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleDelete(p)
+                          }}
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
+                      </span>
                     </div>
                   </div>
                 )
