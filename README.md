@@ -132,4 +132,4 @@ The same API routes serve both environments. Adapters for database, auth, and ca
 
 ## License
 
-[MIT](LICENSE) — Copyright (c) 2025-present Joseph McEvoy
+[AGPL-3.0](LICENSE) — Copyright (c) 2025-present Joseph McEvoy
