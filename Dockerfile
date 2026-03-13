@@ -19,7 +19,7 @@ FROM node:22-slim AS runtime
 WORKDIR /app
 
 # Copy built SPA
-COPY --from=build /app/dist/client ./dist/client
+COPY --from=build /app/dist/standalone ./dist/standalone
 
 # Copy server source (executed via tsx at runtime)
 COPY --from=build /app/server ./server

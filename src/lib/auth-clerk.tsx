@@ -1,18 +1,16 @@
 import { useMemo, type ReactNode } from "react"
-import { ClerkProvider, useAuth, useUser, SignInButton, UserButton, Show } from "@clerk/react"
+import { ClerkProvider, useAuth, useUser, useClerk, SignInButton, UserButton, Show } from "@clerk/react"
 import { AuthProvider, type AppAuth } from "./auth-context"
 
 function ClerkAuthBridge({ children }: { children: ReactNode }) {
   const { isSignedIn, getToken, signOut } = useAuth()
   const { user } = useUser()
+  const { openSignIn } = useClerk()
 
   const auth = useMemo<AppAuth>(() => ({
     isSignedIn: isSignedIn ?? false,
     getToken: () => getToken(),
-    signIn: () => {
-      // Clerk modal is triggered via <SignInButton> component, not programmatically.
-      // Components use <AuthSignInButton> from this module instead.
-    },
+    signIn: () => { openSignIn() },
     signOut: () => { signOut() },
     user: user ? {
       name: user.fullName ?? undefined,
@@ -20,7 +18,7 @@ function ClerkAuthBridge({ children }: { children: ReactNode }) {
       email: user.primaryEmailAddress?.emailAddress ?? undefined,
     } : null,
     mode: "clerk",
-  }), [isSignedIn, getToken, signOut, user])
+  }), [isSignedIn, getToken, openSignIn, signOut, user])
 
   return <AuthProvider value={auth}>{children}</AuthProvider>
 }
