@@ -22,10 +22,10 @@ export class ClerkAuthAdapter implements AuthAdapter {
     const getDbFn = this.getDb
 
     return async (c, next) => {
-      // Run Clerk middleware first to populate auth context
-      await new Promise<void>((resolve) => {
-        clerkMw(c, async () => { resolve() })
-      })
+      // Run Clerk middleware to populate auth context.
+      // Await the returned Promise so errors (e.g. missing keys) propagate
+      // to Hono's onError handler instead of becoming unhandled rejections.
+      await clerkMw(c, async () => { /* no-op: continue in outer scope */ })
 
       const auth = getAuth(c)
       if (!auth?.userId) {
