@@ -30,6 +30,7 @@ pnpm-debug.log*
 .claude/
 .agents/
 .mcp.json
+CLAUDE.md
 
 # OS
 .DS_Store
