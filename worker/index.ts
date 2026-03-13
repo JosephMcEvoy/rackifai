@@ -39,11 +39,12 @@ app.use('*', async (c, next) => {
     'Content-Security-Policy',
     [
       "default-src 'self'",
-      "script-src 'self' https://static.cloudflareinsights.com",
+      "script-src 'self' https://static.cloudflareinsights.com https://clerk.rackifai.com",
       "style-src 'self' 'unsafe-inline'",
-      "connect-src 'self' https://*.clerk.accounts.dev https://api.clerk.com",
-      "img-src 'self' data: blob: https://img.clerk.com https://raw.githubusercontent.com",
-      "frame-src https://*.clerk.accounts.dev",
+      "connect-src 'self' https://*.clerk.accounts.dev https://api.clerk.com https://clerk.rackifai.com",
+      "img-src 'self' data: blob: https://img.clerk.com https://raw.githubusercontent.com https://cdn.jsdelivr.net",
+      "frame-src https://*.clerk.accounts.dev https://clerk.rackifai.com",
+      "worker-src 'self' blob:",
       "frame-ancestors 'none'",
     ].join('; '),
   )
