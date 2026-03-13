@@ -91,12 +91,12 @@ app.route('/api', routes)
 
 // --- Serve SPA static files ---
 
-// Serve static files from dist/client/
-app.use('/*', serveStatic({ root: './dist/client' }))
+// Serve static files from dist/standalone/
+app.use('/*', serveStatic({ root: './dist/standalone' }))
 
 // SPA fallback — serve index.html for all non-API, non-static routes
 app.get('*', async (c) => {
-  const indexPath = path.resolve('./dist/client/index.html')
+  const indexPath = path.resolve('./dist/standalone/index.html')
   if (fs.existsSync(indexPath)) {
     const html = fs.readFileSync(indexPath, 'utf-8')
     return c.html(html)
