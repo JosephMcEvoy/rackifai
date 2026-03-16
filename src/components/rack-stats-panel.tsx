@@ -116,15 +116,15 @@ export function RackStatsPanel() {
         {collapsed && capacityWarning && <WarningBadge label="Capacity" />}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="group flex items-center justify-center w-24 py-0.5 rounded-t-lg border border-b-0 border-border bg-card/80 text-muted-foreground hover:text-foreground hover:bg-card transition-colors"
+          className="group flex items-center justify-center w-20 py-1 rounded-t-lg border border-b-0 border-border/60 stats-glass text-muted-foreground hover:text-foreground transition-all"
           aria-label={collapsed ? "Show rack statistics" : "Hide rack statistics"}
         >
           <span className="flex gap-[3px]">
-            <span className="w-1 h-1 rounded-full bg-current opacity-40 transition-all group-hover:bg-primary group-hover:opacity-100 group-hover:shadow-[0_0_4px_1px] group-hover:shadow-primary" />
-            <span className="w-1 h-1 rounded-full bg-current opacity-40 transition-all group-hover:bg-primary group-hover:opacity-100 group-hover:shadow-[0_0_4px_1px] group-hover:shadow-primary" />
-            <span className="w-1 h-1 rounded-full bg-current opacity-40 transition-all group-hover:bg-primary group-hover:opacity-100 group-hover:shadow-[0_0_4px_1px] group-hover:shadow-primary" />
-            <span className="w-1 h-1 rounded-full bg-current opacity-40 transition-all group-hover:bg-primary group-hover:opacity-100 group-hover:shadow-[0_0_4px_1px] group-hover:shadow-primary" />
-            <span className="w-1 h-1 rounded-full bg-current opacity-40 transition-all group-hover:bg-primary group-hover:opacity-100 group-hover:shadow-[0_0_4px_1px] group-hover:shadow-primary" />
+            <span className="w-1 h-1 rounded-full bg-current opacity-30 transition-all group-hover:bg-primary group-hover:opacity-100" />
+            <span className="w-1 h-1 rounded-full bg-current opacity-30 transition-all group-hover:bg-primary group-hover:opacity-100" />
+            <span className="w-1 h-1 rounded-full bg-current opacity-30 transition-all group-hover:bg-primary group-hover:opacity-100" />
+            <span className="w-1 h-1 rounded-full bg-current opacity-30 transition-all group-hover:bg-primary group-hover:opacity-100" />
+            <span className="w-1 h-1 rounded-full bg-current opacity-30 transition-all group-hover:bg-primary group-hover:opacity-100" />
           </span>
         </button>
       </div>
@@ -134,7 +134,7 @@ export function RackStatsPanel() {
         style={{ gridTemplateRows: collapsed ? "0fr" : "1fr" }}
       >
         <div className="overflow-hidden">
-          <div className="border-t border-border bg-card/80 backdrop-blur-sm px-4 pb-3 pt-2">
+          <div className="border-t border-border/60 stats-glass px-4 pb-3 pt-2">
             {/* Aggregate stats */}
             <div className="grid grid-cols-4 gap-4 mb-3">
               {/* Capacity */}
@@ -242,10 +242,10 @@ function StatCard({
 function ProgressBar({ percent, warning, small }: { percent: number; warning?: boolean; small?: boolean }) {
   const h = small ? "h-1" : "h-1.5"
   return (
-    <div className={`w-full ${h} rounded-full bg-muted mt-1`}>
+    <div className={`w-full ${h} rounded-full bg-muted/60 mt-1 overflow-hidden`}>
       <div
-        className={`${h} rounded-full transition-all ${
-          warning ? "bg-amber-400" : "bg-primary"
+        className={`${h} rounded-full transition-all duration-500 ease-out ${
+          warning ? "bg-amber-400 shadow-[0_0_8px_-1px_rgba(251,191,36,0.4)]" : "bg-primary shadow-[0_0_8px_-1px_rgba(37,99,235,0.3)]"
         }`}
         style={{ width: `${Math.min(percent, 100)}%` }}
       />

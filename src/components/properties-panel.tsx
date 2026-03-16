@@ -538,8 +538,8 @@ function DeviceNameHeader({
   }
 
   return (
-    <div className="flex items-center gap-2 pb-2 border-b border-border">
-      <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: color }} />
+    <div className="flex items-center gap-2.5 pb-3 border-b border-border/50">
+      <div className="w-2.5 h-2.5 rounded-full shrink-0 shadow-[0_0_6px_1px] shadow-current/20" style={{ backgroundColor: color }} />
       {editing ? (
         <input
           ref={inputRef}
@@ -577,19 +577,22 @@ function DeviceNameHeader({
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   const [open, setOpen] = useState(true)
   return (
-    <div className="border-b border-border pb-3 last:border-0">
+    <div className="border-b border-border/50 pb-3 last:border-0">
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center justify-between w-full text-left mb-2 group"
+        className="flex items-center justify-between w-full text-left mb-2 group rounded px-1 -mx-1 py-0.5 hover:bg-secondary/40 transition-colors"
       >
-        <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground group-hover:text-foreground transition-colors">
+        <span className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground group-hover:text-foreground transition-colors">
           {title}
         </span>
-        <span className="text-[10px] text-muted-foreground">
-          {open ? "\u25B4" : "\u25BE"}
-        </span>
+        <svg
+          className={`h-3 w-3 text-muted-foreground transition-transform duration-200 ${open ? "rotate-0" : "-rotate-90"}`}
+          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+        >
+          <path d="m6 9 6 6 6-6"/>
+        </svg>
       </button>
-      {open && <div className="space-y-2.5">{children}</div>}
+      <div className={`space-y-2.5 transition-all duration-200 ${open ? "opacity-100" : "opacity-0 h-0 overflow-hidden"}`}>{children}</div>
     </div>
   )
 }

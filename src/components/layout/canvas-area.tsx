@@ -36,7 +36,7 @@ export const CanvasArea = forwardRef<RackCanvasHandle>(function CanvasArea(_prop
       <div className="relative flex flex-1 overflow-hidden">
         <div
           ref={setNodeRef}
-          className={`relative flex-1 overflow-hidden bg-background transition-shadow ${
+          className={`relative flex-1 overflow-hidden bg-background canvas-grid-bg transition-all ${
             isOver ? "ring-2 ring-primary/40 ring-inset" : ""
           }`}
         >
@@ -51,7 +51,7 @@ export const CanvasArea = forwardRef<RackCanvasHandle>(function CanvasArea(_prop
         </div>
       </div>
       <aside
-        className={`absolute top-0 right-0 h-full w-72 z-10 border-l border-border bg-card overflow-y-auto transition-transform duration-300 ease-in-out ${
+        className={`absolute top-0 right-0 h-full w-72 z-10 border-l border-border bg-card/95 backdrop-blur-sm overflow-y-auto transition-transform duration-200 ease-out shadow-[-4px_0_24px_-8px_rgba(0,0,0,0.4)] ${
           showDevicePanel || showRackPanel
             ? "translate-x-0"
             : "translate-x-full"

@@ -1,6 +1,21 @@
 import { useState, useRef, useEffect } from "react"
 import { useAppAuth } from "@/lib/auth-context"
-import { CloudUpload, CloudDownload } from "lucide-react"
+import {
+  CloudUpload,
+  CloudDownload,
+  FolderOpen,
+  Plus,
+  FlipVertical,
+  Image,
+  Grid3X3,
+  Undo2,
+  Redo2,
+  ZoomIn,
+  ZoomOut,
+  Download,
+  Share2,
+  Keyboard,
+} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useRackStore } from "@/store/rack-store"
 import type { SaveStatus } from "@/lib/use-autosave"
@@ -100,13 +115,13 @@ export function Toolbar({
   return (
     <>
       <div
-        className="flex items-center gap-2 border-b border-border bg-background px-4"
+        className="flex items-center gap-1.5 border-b border-border bg-card/50 px-3"
         style={{ height: TOOLBAR_HEIGHT }}
       >
         {/* Brand */}
-        <span className="text-sm font-bold tracking-tight text-foreground hover:text-primary transition-colors select-none cursor-default">rackifai</span>
+        <span className="text-sm font-extrabold tracking-tight bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent select-none cursor-default mr-1">rackif<span className="text-primary">ai</span></span>
 
-        <div className="w-px h-5 bg-border mx-1" />
+        <div className="w-px h-5 bg-border/60" />
 
         {/* Project name */}
         {editing ? (
@@ -119,22 +134,22 @@ export function Toolbar({
               if (e.key === "Enter") commitName()
               if (e.key === "Escape") setEditing(false)
             }}
-            className="w-40 rounded border border-input bg-background px-2 py-0.5 text-sm text-foreground outline-none focus:border-primary"
+            className="w-40 rounded-md border border-primary/50 bg-background px-2 py-0.5 text-sm text-foreground outline-none focus:border-primary focus:ring-1 focus:ring-primary/30"
           />
         ) : (
           <button
             onClick={() => { setEditValue(projectName); setEditing(true) }}
-            className="text-sm font-medium text-foreground hover:text-primary transition-colors truncate max-w-[200px]"
+            className="text-sm font-medium text-foreground/90 hover:text-foreground transition-colors truncate max-w-[200px] rounded px-1.5 py-0.5 hover:bg-secondary/60"
             title="Click to rename"
           >
             {projectName}
           </button>
         )}
 
-        <span className={`text-xs ${STATUS_COLORS[saveStatus]} inline-flex items-center gap-1`}>
+        <span className={`text-[11px] ${STATUS_COLORS[saveStatus]} inline-flex items-center gap-1`}>
           {saveStatus === "saved" ? (
             <>
-              <span>{storageMode === "local" ? "Saved Locally" : "Saved"}</span>
+              <span className="opacity-80">{storageMode === "local" ? "Local" : "Saved"}</span>
               {storageMode === "local" ? (
                 isSignedIn ? (
                   <button
@@ -176,110 +191,120 @@ export function Toolbar({
         {onProjects && (
           ProjectsButtonWrapper ? (
             <ProjectsButtonWrapper>
-              <Button ref={projectsButtonRef} variant="ghost" size="sm" onClick={onProjects} className="text-xs h-7" title="Projects">
+              <Button ref={projectsButtonRef} variant="ghost" size="sm" onClick={onProjects} className="text-xs h-7 gap-1.5 text-muted-foreground hover:text-foreground" title="Projects">
+                <FolderOpen className="h-3.5 w-3.5" />
                 Projects
               </Button>
             </ProjectsButtonWrapper>
           ) : (
-            <Button ref={projectsButtonRef} variant="ghost" size="sm" onClick={onProjects} className="text-xs h-7" title="Projects">
+            <Button ref={projectsButtonRef} variant="ghost" size="sm" onClick={onProjects} className="text-xs h-7 gap-1.5 text-muted-foreground hover:text-foreground" title="Projects">
+              <FolderOpen className="h-3.5 w-3.5" />
               Projects
             </Button>
           )
         )}
 
-        {/* Add rack */}
-        {onAddRack && (
-          <Button variant="ghost" size="sm" onClick={onAddRack} className="text-xs h-7 gap-1" title="Add Rack">
-            + Rack
-          </Button>
-        )}
+        <div className="w-px h-4 bg-border/40" />
 
-        {/* Front/Rear toggle */}
-        {onToggleFace && (
-          <Button variant="ghost" size="sm" onClick={onToggleFace} className="text-xs h-7 gap-1" title="Toggle front/rear view">
-            {viewFace === "front" ? "Front" : "Rear"}
-          </Button>
-        )}
+        {/* Rack & View controls group */}
+        <div className="toolbar-group">
+          {onAddRack && (
+            <Button variant="ghost" size="sm" onClick={onAddRack} className="text-xs h-6 gap-1 px-2 text-muted-foreground hover:text-foreground" title="Add Rack">
+              <Plus className="h-3.5 w-3.5" />
+              Rack
+            </Button>
+          )}
 
-        {/* Device images toggle */}
-        {onToggleDeviceImages && (
+          {onToggleFace && (
+            <Button variant="ghost" size="sm" onClick={onToggleFace} className="text-xs h-6 gap-1 px-2 text-muted-foreground hover:text-foreground" title="Toggle front/rear view">
+              <FlipVertical className="h-3.5 w-3.5" />
+              {viewFace === "front" ? "Front" : "Rear"}
+            </Button>
+          )}
+
+          {onToggleDeviceImages && (
+            <Button
+              variant={showDeviceImages ? "secondary" : "ghost"}
+              size="sm"
+              onClick={onToggleDeviceImages}
+              className={`text-xs h-6 gap-1 px-2 ${showDeviceImages ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}
+              title="Toggle device elevation images"
+            >
+              <Image className="h-3.5 w-3.5" />
+              Images
+            </Button>
+          )}
+
+          {onToggleGrid && (
+            <Button
+              variant={showGrid ? "secondary" : "ghost"}
+              size="sm"
+              onClick={onToggleGrid}
+              className={`text-xs h-6 gap-1 px-2 ${showGrid ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}
+              title="Toggle canvas grid"
+            >
+              <Grid3X3 className="h-3.5 w-3.5" />
+              Grid
+            </Button>
+          )}
+        </div>
+
+        <div className="w-px h-4 bg-border/40" />
+
+        {/* Undo/Redo group */}
+        <div className="toolbar-group">
           <Button
-            variant={showDeviceImages ? "secondary" : "ghost"}
+            variant="ghost"
             size="sm"
-            onClick={onToggleDeviceImages}
-            className="text-xs h-7 gap-1"
-            title="Toggle device elevation images"
+            onClick={onUndo}
+            className="text-xs h-6 w-6 p-0 text-muted-foreground hover:text-foreground"
+            title="Undo (Ctrl+Z)"
           >
-            Images
+            <Undo2 className="h-3.5 w-3.5" />
           </Button>
-        )}
-
-        {/* Grid toggle */}
-        {onToggleGrid && (
           <Button
-            variant={showGrid ? "secondary" : "ghost"}
+            variant="ghost"
             size="sm"
-            onClick={onToggleGrid}
-            className="text-xs h-7 gap-1"
-            title="Toggle canvas grid"
+            onClick={onRedo}
+            className="text-xs h-6 w-6 p-0 text-muted-foreground hover:text-foreground"
+            title="Redo (Ctrl+Shift+Z)"
           >
-            Grid
+            <Redo2 className="h-3.5 w-3.5" />
           </Button>
-        )}
+        </div>
 
-        <div className="w-px h-5 bg-border mx-1" />
-
-        {/* Undo/Redo */}
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={onUndo}
-          className="text-xs h-7 w-7 p-0"
-          title="Undo (Ctrl+Z)"
-        >
-          ↶
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={onRedo}
-          className="text-xs h-7 w-7 p-0"
-          title="Redo (Ctrl+Shift+Z)"
-        >
-          ↷
-        </Button>
-
-        <div className="w-px h-5 bg-border mx-1" />
+        <div className="w-px h-4 bg-border/40" />
 
         {/* Zoom controls */}
-        <div className="flex items-center gap-0.5">
-          <Button variant="ghost" size="sm" onClick={onZoomOut} className="text-xs h-7 w-7 p-0" title="Zoom Out (-)">
-            −
+        <div className="toolbar-group">
+          <Button variant="ghost" size="sm" onClick={onZoomOut} className="text-xs h-6 w-6 p-0 text-muted-foreground hover:text-foreground" title="Zoom Out (-)">
+            <ZoomOut className="h-3.5 w-3.5" />
           </Button>
           <button
             onClick={onZoomFit}
-            className="text-[10px] font-mono text-muted-foreground hover:text-primary w-10 text-center transition-colors"
+            className="text-[10px] font-mono text-muted-foreground hover:text-primary w-10 text-center transition-colors rounded px-1"
             title="Fit to Screen (0)"
           >
             {Math.round(zoomLevel)}%
           </button>
-          <Button variant="ghost" size="sm" onClick={onZoomIn} className="text-xs h-7 w-7 p-0" title="Zoom In (+)">
-            +
+          <Button variant="ghost" size="sm" onClick={onZoomIn} className="text-xs h-6 w-6 p-0 text-muted-foreground hover:text-foreground" title="Zoom In (+)">
+            <ZoomIn className="h-3.5 w-3.5" />
           </Button>
         </div>
 
-        <div className="w-px h-5 bg-border mx-1" />
+        <div className="w-px h-4 bg-border/40" />
 
-        {/* Export */}
+        {/* Export & Share */}
         {onExport && (
-          <Button variant="ghost" size="sm" onClick={onExport} className="text-xs h-7" title="Export (Ctrl+E)">
+          <Button variant="ghost" size="sm" onClick={onExport} className="text-xs h-7 gap-1.5 text-muted-foreground hover:text-foreground" title="Export (Ctrl+E)">
+            <Download className="h-3.5 w-3.5" />
             Export
           </Button>
         )}
 
-        {/* Share */}
         {onShare && (
-          <Button variant="ghost" size="sm" onClick={onShare} className="text-xs h-7" title="Share">
+          <Button variant="ghost" size="sm" onClick={onShare} className="text-xs h-7 gap-1.5 text-muted-foreground hover:text-foreground" title="Share">
+            <Share2 className="h-3.5 w-3.5" />
             Share
           </Button>
         )}
@@ -289,13 +314,13 @@ export function Toolbar({
           variant="ghost"
           size="sm"
           onClick={onShowShortcuts}
-          className="text-xs h-7 w-7 p-0"
+          className="text-xs h-7 w-7 p-0 text-muted-foreground hover:text-foreground"
           title="Keyboard Shortcuts (?)"
         >
-          ?
+          <Keyboard className="h-3.5 w-3.5" />
         </Button>
 
-        <div className="w-px h-5 bg-border mx-1" />
+        <div className="w-px h-4 bg-border/40" />
 
         {/* Auth */}
         <ToolbarAuth />

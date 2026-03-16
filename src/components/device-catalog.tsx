@@ -76,7 +76,7 @@ function DeviceCard({
       style={style}
       {...listeners}
       {...attributes}
-      className="group flex items-center gap-2 rounded-md border border-border bg-card p-2 cursor-grab active:cursor-grabbing hover:bg-accent/50 transition-colors"
+      className="group flex items-center gap-2 rounded-lg border border-border/60 bg-card/60 p-2 cursor-grab active:cursor-grabbing hover:bg-accent/60 hover:border-border transition-all duration-150"
     >
       {/* Thumbnail or category indicator */}
       {device.frontImageUrl ? (
@@ -288,30 +288,33 @@ export function DeviceCatalog() {
     <div className="flex h-full flex-col">
       {/* Header */}
       <div className="px-3 pt-3 pb-2">
-        <div className="flex items-center justify-between mb-2">
-          <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+        <div className="flex items-center justify-between mb-2.5">
+          <h2 className="text-[11px] font-semibold text-muted-foreground uppercase tracking-widest">
             Device Catalog
           </h2>
-          <span className="text-[10px] text-muted-foreground tabular-nums">
-            {allDevices.length.toLocaleString()} devices
+          <span className="text-[10px] text-muted-foreground/70 tabular-nums font-mono">
+            {allDevices.length.toLocaleString()}
           </span>
         </div>
 
         {/* Search */}
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search devices..."
-          className="w-full rounded-md border border-input bg-background px-2.5 py-1.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring"
-        />
+        <div className="relative">
+          <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground/50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search devices..."
+            className="w-full rounded-lg border border-input/60 bg-background/60 pl-8 pr-2.5 py-1.5 text-xs text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/40 focus:border-primary/40 transition-colors"
+          />
+        </div>
       </div>
 
       {/* Manufacturer dropdown */}
       <div className="px-3 pb-2 relative">
         <button
           onClick={() => setMfgDropdownOpen(!mfgDropdownOpen)}
-          className="w-full flex items-center justify-between rounded-md border border-input bg-background px-2.5 py-1.5 text-xs text-foreground hover:bg-accent/50 transition-colors"
+          className="w-full flex items-center justify-between rounded-lg border border-input/60 bg-background/60 px-2.5 py-1.5 text-xs text-foreground hover:bg-accent/50 hover:border-border transition-all"
         >
           <span className="truncate">
             {activeManufacturer === "all"
@@ -351,10 +354,10 @@ export function DeviceCatalog() {
       <div className="flex flex-wrap gap-1 px-3 pb-2">
         <button
           onClick={() => setActiveCategory("all")}
-          className={`rounded-full px-2 py-0.5 text-[10px] font-medium transition-colors ${
+          className={`rounded-full px-2.5 py-0.5 text-[10px] font-medium transition-all duration-150 ${
             activeCategory === "all"
-              ? "bg-primary text-primary-foreground"
-              : "bg-secondary text-muted-foreground hover:text-foreground"
+              ? "bg-primary text-primary-foreground shadow-sm shadow-primary/25"
+              : "bg-secondary/70 text-muted-foreground hover:text-foreground hover:bg-secondary"
           }`}
         >
           All
@@ -363,13 +366,13 @@ export function DeviceCatalog() {
           <button
             key={category}
             onClick={() => setActiveCategory(category)}
-            className={`rounded-full px-2 py-0.5 text-[10px] font-medium transition-colors ${
+            className={`rounded-full px-2.5 py-0.5 text-[10px] font-medium transition-all duration-150 ${
               activeCategory === category
-                ? "bg-primary text-primary-foreground"
-                : "bg-secondary text-muted-foreground hover:text-foreground"
+                ? "bg-primary text-primary-foreground shadow-sm shadow-primary/25"
+                : "bg-secondary/70 text-muted-foreground hover:text-foreground hover:bg-secondary"
             }`}
           >
-            {CATEGORY_LABELS[category]} ({count})
+            {CATEGORY_LABELS[category]} <span className="opacity-60">{count}</span>
           </button>
         ))}
       </div>
@@ -431,11 +434,11 @@ export function DeviceCatalog() {
       </div>
 
       {/* Add Custom Device button */}
-      <div className="border-t border-border p-3">
+      <div className="border-t border-border/60 p-3">
         <Button
           variant="outline"
           size="sm"
-          className="w-full gap-1.5 text-xs"
+          className="w-full gap-1.5 text-xs border-dashed border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 hover:bg-primary/5 transition-all"
           onClick={() => {
             setEditingDevice(null)
             setFormOpen(true)
