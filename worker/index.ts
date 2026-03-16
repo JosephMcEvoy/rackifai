@@ -39,7 +39,7 @@ app.use('*', async (c, next) => {
     'Content-Security-Policy',
     [
       "default-src 'self'",
-      "script-src 'self' https://static.cloudflareinsights.com https://clerk.rackifai.com",
+      "script-src 'self' 'sha256-+Hk/nSIsAKyn63G96OO6Bu6qBuEzwaezqjP2IijOQ5M=' https://static.cloudflareinsights.com https://clerk.rackifai.com",
       "style-src 'self' 'unsafe-inline'",
       "connect-src 'self' https://*.clerk.accounts.dev https://api.clerk.com https://clerk.rackifai.com",
       "img-src 'self' data: blob: https://img.clerk.com https://raw.githubusercontent.com https://cdn.jsdelivr.net",
